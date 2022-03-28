@@ -8,7 +8,7 @@ steps:
   clean: true
 
 # Only when building on Windows:
-- ${{ if eq(parameters.os, 'Windows_NT') }}:
+#- ${{ if eq(parameters.os, 'Windows_NT') }}:
 
   # Start collect diagnostics
   # - powershell: ./ci/start-collect-diagnostics.ps1
