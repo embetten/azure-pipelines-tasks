@@ -11,9 +11,9 @@ steps:
 - ${{ if eq(parameters.os, 'Windows_NT') }}:
 
   # Start collect diagnostics
-  - powershell: ./ci/start-collect-diagnostics.ps1
-    displayName: Start collect diagnostics
-    condition: and(succeeded(), eq(variables.collect_diagnostics, 'true'))
+  # - powershell: ./ci/start-collect-diagnostics.ps1
+  #   displayName: Start collect diagnostics
+  #   condition: and(succeeded(), eq(variables.collect_diagnostics, 'true'))
 
 # Use node 8, npm 5
 - task: NodeTool@0
@@ -31,9 +31,9 @@ steps:
 # Filter out unchanged tasks
 - script: node ./ci/filter-tasks.js
   displayName: Filter out unchanged tasks
-  env:
-    PACKAGE_ENDPOINT: $(Package.Endpoint)
-    PACKAGE_TOKEN: $(Package.Token)
+  # env:
+  #   PACKAGE_ENDPOINT: $(Package.Endpoint)
+  #   PACKAGE_TOKEN: $(Package.Token)
 
 # Verify min agent version demands
 - script: |
@@ -76,20 +76,20 @@ steps:
       publishLocation: container
 
 # Test
-- script: node make.js test
-  displayName: Run tests
-  condition: ne(variables['numTasks'], 0)
-- script: node make.js testLegacy --task "$(task_pattern)"
-  displayName: Legacy tests with node 6
-  condition: ne(variables['numTasks'], 0)
+# - script: node make.js test
+#   displayName: Run tests
+#   condition: ne(variables['numTasks'], 0)
+# - script: node make.js testLegacy --task "$(task_pattern)"
+#   displayName: Legacy tests with node 6
+#   condition: ne(variables['numTasks'], 0)
 
 # Only when building on Windows:
-- ${{ if eq(parameters.os, 'Windows_NT') }}:
+#- ${{ if eq(parameters.os, 'Windows_NT') }}:
 
   # Stop collect diagnostics
-  - powershell: ./ci/stop-collect-diagnostics.ps1
-    displayName: Stop collect diagnostics
-    condition: and(always(), eq(variables.collect_diagnostics, 'true'), ne(variables['numTasks'], 0))
+  # - powershell: ./ci/stop-collect-diagnostics.ps1
+  #   displayName: Stop collect diagnostics
+  #   condition: and(always(), eq(variables.collect_diagnostics, 'true'), ne(variables['numTasks'], 0))
 
   # - powershell: |
   #     # Build the release branch name
