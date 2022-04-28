@@ -1,9 +1,9 @@
-resources:
-  repositories:
-  - repository: MyFirstPublicProject
-    type: git
-    endpoint: MyFirstPublicProject
-    name: MyFirstPublicProject
+# resources:
+#   repositories:
+#   - repository: MyFirstPublicProject
+#     type: git
+#     endpoint: MyFirstPublicProject
+#     name: MyFirstPublicProject
 
 jobs:
 
