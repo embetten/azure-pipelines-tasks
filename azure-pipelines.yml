@@ -1,14 +1,14 @@
-trigger:
-- master
-- releases/*
-- node6hotfixes/*
+# trigger:
+# - master
+# - releases/*
+# - node6hotfixes/*
 
-resources:
-  repositories:
-  - repository: AzureDevOps
-    type: git
-    endpoint: AzureDevOps
-    name: AzureDevOps/AzureDevOps
+# resources:
+#   repositories:
+#   - repository: AzureDevOps
+#     type: git
+#     endpoint: AzureDevOps
+#     name: AzureDevOps/AzureDevOps
 
 jobs:
 
