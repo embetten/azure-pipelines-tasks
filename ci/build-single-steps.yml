@@ -37,9 +37,9 @@ steps:
   displayName: Stage tasks individually into the package directory
 
 # Sign task zip as nuget packages
-- template: sign-all-tasks.yml
-  parameters:
-    layoutRoot: $(Build.SourcesDirectory)\_package\tasks-layout
+# - template: sign-all-tasks.yml
+#   parameters:
+#     layoutRoot: $(Build.SourcesDirectory)\_package\tasks-layout
 
 # Stage hotfix
 - script: node ./ci/stage-hotfix.js
@@ -55,6 +55,21 @@ steps:
     artifactName: hotfix
     publishLocation: container
 
+# Stage per task NuGet package
+- script: npm run package
+  condition: and(succeeded(), eq(variables.os, 'Windows_NT'), variables.rollForward)
+  displayName: npm run package
+
+# # Update Unifieddeps
+# - script: node azure-pipelines-tasks\ci\courtesy-push\courtesy-push.js AzureDevOps\.nuget\externals\UnifiedDependencies.xml IndividualNugetPackagesDownloaded\IndividualNugetPackages\unified_deps.xml
+#   condition: and(succeeded(), eq(variables.os, 'Windows_NT'), variables.rollForward)
+#   displayName: 'Update unified deps'
+
+# # Authenticate to Azure Artifacts feed
+# - task: NuGetAuthenticate@0
+#   condition: and(succeeded(), eq(variables.os, 'Windows_NT'), variables.rollForward)
+#   displayName: 'Authenticate with nuget'
+
 # Test
 - script: node make.js test
   displayName: Run tests
@@ -68,6 +83,39 @@ steps:
     testResultsFiles: 'test-*.xml'
     testRunTitle: 'Node 6 Test Results'
     searchFolder: '$(System.DefaultWorkingDirectory)/testresults'
+
+# - script: |
+#     cd IndividualNugetPackagesDownloaded
+#     cd IndividualNugetPackages
+#     push.cmd
+#   displayName: 'Push Nuget packages'
+#   condition: and(succeeded(), variables.rollForward)
+
+# - powershell: |
+#     # Build the release branch name
+#     $currentSprint = (Invoke-WebRequest https://whatsprintis.it/sprint -Headers @{"Accept"= "application/json"} | ConvertFrom-Json).sprint
+#     $releaseBranch = "users/$(username)/m" + $currentSprint + "/courtesyPush"
+
+#     # Push branch to git
+#     Write-Host "Pushing branch to AzureDevOps"
+#     cd AzureDevOps
+#     git checkout -b $releaseBranch
+#     git config --global user.email "$(username)@microsoft.com"
+#     git config --global user.name "$(username)"
+#     git add .nuget\externals\UnifiedDependencies.xml
+#     git commit -m "Courtesy bump of tasks"
+#     git push origin $releaseBranch
+#     Write-Host "Creating Pull Request"
+#     cd ..\azure-pipelines-tasks\ci\courtesy-push
+#     npm install
+#     node open-courtesy-push-pull-request.js $releaseBranch
+    
+#     # Sleep 30 seconds to let PR be created
+#     Start-Sleep -Seconds 30
+#   displayName: Create PR in Azure DevOps
+#   env:
+#     TOKEN: $(Package.Token) 
+#   condition: and(succeeded(), or(eq(variables['WEEK'], '3'), eq(variables['FORCE_COURTESY_PUSH'], 'true')))
 
 # Stop collect diagnostics
 - powershell: ./ci/stop-collect-diagnostics.ps1
