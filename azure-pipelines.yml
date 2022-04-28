@@ -1,9 +1,9 @@
 resources:
   repositories:
-  - repository: AzureDevOps
+  - repository: MyFirstPublicProject
     type: git
     endpoint: MyFirstPublicProject
-    name: MyFirstPublicProject/MyFirstPublicProject
+    name: MyFirstPublicProject
 
 jobs:
 
