@@ -31,13 +31,10 @@ steps:
 - script: node make.js build --task "$(task)"
   displayName: Build
 
-# Only on Windows:
-- ${{ if eq(parameters.os, 'Windows_NT') }}:
 
-  # Stage tasks individually into the package directory
-  - script: node ./ci/stage-package.js individually
-    displayName: Stage tasks individually into the package directory
-    condition: and(succeeded(), ne(variables['build.reason'], 'PullRequest'), ne(variables['numTasks'], 0))
+# Stage tasks individually into the package directory
+- script: node ./ci/stage-package.js individually
+  displayName: Stage tasks individually into the package directory
 
   # # Sign all task zips as nuget packages
   # - template: sign-all-tasks.yml
@@ -45,9 +42,8 @@ steps:
   #     layoutRoot: $(Build.SourcesDirectory)\_package\tasks-layout
 
   # Stage all the tasks into a single zip for upload
-  - script: node ./ci/stage-package.js
-    displayName: Stage all the tasks into a single zip for upload
-    condition: and(succeeded(), ne(variables['build.reason'], 'PullRequest'), ne(variables['numTasks'], 0))
+- script: node ./ci/stage-package.js
+  displayName: Stage all the tasks into a single zip for upload
 
 # Stage milestone
 # TODO: Rename this.. we are staging task packages not the milestone.
