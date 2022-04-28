@@ -5,9 +5,9 @@ steps:
   clean: true
 
 # Start collect diagnostics
-- powershell: ./ci/start-collect-diagnostics.ps1
-  displayName: Start collect diagnostics
-  condition: and(succeeded(), eq(variables.os, 'Windows_NT'), eq(variables.collect_diagnostics, 'true'))
+# - powershell: ./ci/start-collect-diagnostics.ps1
+#   displayName: Start collect diagnostics
+#   condition: and(succeeded(), eq(variables.os, 'Windows_NT'), eq(variables.collect_diagnostics, 'true'))
 
 # Use node 8, npm 5
 - task: NodeTool@0
@@ -118,6 +118,6 @@ steps:
 #   condition: and(succeeded(), or(eq(variables['WEEK'], '3'), eq(variables['FORCE_COURTESY_PUSH'], 'true')))
 
 # Stop collect diagnostics
-- powershell: ./ci/stop-collect-diagnostics.ps1
-  displayName: Stop collect diagnostics
-  condition: and(always(), eq(variables.os, 'Windows_NT'), eq(variables.collect_diagnostics, 'true'))
+# - powershell: ./ci/stop-collect-diagnostics.ps1
+#   displayName: Stop collect diagnostics
+#   condition: and(always(), eq(variables.os, 'Windows_NT'), eq(variables.collect_diagnostics, 'true'))

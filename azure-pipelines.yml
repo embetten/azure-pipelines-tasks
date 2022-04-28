@@ -1,9 +1,9 @@
-# resources:
-#   repositories:
-#   - repository: AzureDevOps
-#     type: git
-#     endpoint: AzureDevOps
-#     name: AzureDevOps/AzureDevOps
+resources:
+  repositories:
+  - repository: AzureDevOps
+    type: git
+    endpoint: AzureDevOps
+    name: AzureDevOps/AzureDevOps
 
 jobs:
 
