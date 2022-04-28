@@ -13,7 +13,7 @@ fs.mkdirSync(util.milestoneLayoutPath);
 fs.writeFileSync(path.join(util.milestoneLayoutPath, 'layout-version.txt'), '2');
 
 // extract the artifact
-var artifactZipPath = path.join(process.env.SYSTEM_ARTIFACTSDIRECTORY, "package", "tasks.zip");
+var artifactZipPath = "D:\a\1\s\_package\tasks.zip";//path.join(process.env.SYSTEM_ARTIFACTSDIRECTORY, "package", "tasks.zip");
 var artifactPath = path.join(util.packagePath, "package");
 util.expandTasks(artifactZipPath, artifactPath);
 
