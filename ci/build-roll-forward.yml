@@ -55,6 +55,7 @@ steps:
 
 - powershell: |
     Copy-Item $(Build.SourcesDirectory)\_package\tasks-layout -Destination $env:SYSTEM_ARTIFACTSDIRECTORY\package.zip
+    Add-Type -Assembly 'System.IO.Compression.FileSystem'
     [System.IO.Compression.ZipFile]::ExtractToDirectory("$env:SYSTEM_ARTIFACTSDIRECTORY\package.zip", "$env:SYSTEM_ARTIFACTSDIRECTORY")
 
 - script: node .\ci\stage-milestone.js
