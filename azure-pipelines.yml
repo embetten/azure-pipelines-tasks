@@ -117,6 +117,8 @@ jobs:
     vmImage: windows-2022
   steps:
   - template: ci/build-roll-forward.yml
+    parameters:
+      os: Windows_NT
 
 # - job: buildSharedNpm_win
 #   displayName: Build shared npm packages (Win)
