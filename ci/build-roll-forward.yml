@@ -31,32 +31,45 @@ steps:
 - script: node make.js build --task "$(task)"
   displayName: Build
 
-# Stage hotfix
-- script: node ./ci/stage-hotfix.js individually
-  condition: and(succeeded(), eq(variables.os, 'Windows_NT'))
-  displayName: Stage tasks individually into the package directory
+# Only on Windows:
+- ${{ if eq(parameters.os, 'Windows_NT') }}:
 
-# Sign task zip as nuget packages
-# - template: sign-all-tasks.yml
-#   parameters:
-#     layoutRoot: $(Build.SourcesDirectory)\_package\tasks-layout
+  # Stage tasks individually into the package directory
+  - script: node ./ci/stage-package.js individually
+    displayName: Stage tasks individually into the package directory
+    condition: and(succeeded(), ne(variables['build.reason'], 'PullRequest'), ne(variables['numTasks'], 0))
+
+  # Sign all task zips as nuget packages
+  # - template: sign-all-tasks.yml
+  #   parameters:
+  #     layoutRoot: $(Build.SourcesDirectory)\_package\tasks-layout
+
+  # Stage all the tasks into a single zip for upload
+  - script: node ./ci/stage-package.js
+    displayName: Stage all the tasks into a single zip for upload
+    condition: and(succeeded(), ne(variables['build.reason'], 'PullRequest'), ne(variables['numTasks'], 0))
+
+# Set variables
+- powershell: .\ci\set-publish-variables.ps1
+  displayName: Set publish variables
+
+- script: | 
+  Copy-Item $(Build.SourcesDirectory)\_package\tasks-layout -Destination $env:SYSTEM_ARTIFACTSDIRECTORY\package.zip
+  [System.IO.Compression.ZipFile]::ExtractToDirectory($env:SYSTEM_ARTIFACTSDIRECTORY\package.zip, $env:SYSTEM_ARTIFACTSDIRECTORY)
+
+- script: node .\ci\stage-milestone.js
+  displayName: Stage milestone
 
 # Stage per task NuGet package
 - script: npm run package
   displayName: npm run package
+  env:
+    COURTESY_PUSH: $(courtesyPush)
 
 # Authenticate 
 - task: NuGetAuthenticate@0
   displayName: 'Authenticate with nuget'
   condition: and(succeeded(), or(eq(variables['WEEK'], '3'), eq(variables['FORCE_COURTESY_PUSH'], 'true')))
-
-# - script: |
-#     cd IndividualNugetPackagesDownloaded
-#     cd IndividualNugetPackages
-#     push.cmd
-#   displayName: 'Push Nuget packages'
-#   condition: and(succeeded(), or(eq(variables['WEEK'], '3'), eq(variables['FORCE_COURTESY_PUSH'], 'true')))
-
 
 # # Test
 # - script: node make.js test
