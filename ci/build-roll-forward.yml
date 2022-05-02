@@ -54,9 +54,8 @@ steps:
   displayName: Set publish variables
 
 - powershell: |
-    Copy-Item $(Build.SourcesDirectory)\_package\tasks-layout -Destination $env:SYSTEM_ARTIFACTSDIRECTORY\package.zip
     Add-Type -Assembly 'System.IO.Compression.FileSystem'
-    [System.IO.Compression.ZipFile]::ExtractToDirectory("$env:SYSTEM_ARTIFACTSDIRECTORY\package.zip", "$env:SYSTEM_ARTIFACTSDIRECTORY")
+    [System.IO.Compression.ZipFile]::ExtractToDirectory("D:\a\1\s\_package\tasks.zip", "$env:SYSTEM_ARTIFACTSDIRECTORY")
 
 - script: node .\ci\stage-milestone.js
   displayName: Stage milestone
