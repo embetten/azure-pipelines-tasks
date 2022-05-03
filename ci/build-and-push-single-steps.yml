@@ -90,6 +90,8 @@ steps:
 # Stage per task NuGet package
 - script: npm run package
   displayName: npm run package
+  env:
+    COURTESY_PUSH: $(courtesyPush)
   condition: and(succeeded(), ne(variables['build.reason'], 'PullRequest'), variables.task, variables.rollForward)
 
 # Authenticate 
