@@ -70,12 +70,14 @@ steps:
 # Authenticate 
 - task: NuGetAuthenticate@0
   displayName: 'Authenticate with nuget'
-  condition: and(succeeded(), or(eq(variables['WEEK'], '3'), eq(variables['FORCE_COURTESY_PUSH'], 'true')))
 
 # Push to feed
-- script: |
+- powershell: |
+    Write-Host $(Build.SourcesDirectory)\_package\nuget-packages\$(task)
     cd $(Build.SourcesDirectory)\_package\nuget-packages\$(task)
+    Write-Host "moved"
     push.cmd
+    Write-Host "pushed"
   displayName: 'Push Nuget packages'
 
 # # Test
