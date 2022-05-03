@@ -54,6 +54,7 @@ steps:
   displayName: Set publish variables
 
 - powershell: |
+    mkdir $env:SYSTEM_ARTIFACTSDIRECTORY\package
     Copy-Item $(Build.SourcesDirectory)\_package\tasks.zip -Destination $env:SYSTEM_ARTIFACTSDIRECTORY\package\tasks.zip
     Write-Host "Copying from '$(Build.SourcesDirectory)\_package\tasks.zip' to '$env:SYSTEM_ARTIFACTSDIRECTORY\package\tasks.zip'"
 
