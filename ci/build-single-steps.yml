@@ -1,8 +1,8 @@
 steps:
 
-# Clean
-# - checkout: self
-#   clean: true
+Clean
+- checkout: self
+  clean: true
 
 # Start collect diagnostics
 - powershell: ./ci/start-collect-diagnostics.ps1
