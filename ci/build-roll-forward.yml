@@ -76,7 +76,7 @@ steps:
     Write-Host $(Build.SourcesDirectory)\_package\nuget-packages\$(task)
     cd $(Build.SourcesDirectory)\_package\nuget-packages\$(task)
     Write-Host "moved"
-    push.cmd
+    .\push.cmd
     Write-Host "pushed"
   displayName: 'Push Nuget packages'
 
