@@ -72,6 +72,12 @@ steps:
   displayName: 'Authenticate with nuget'
   condition: and(succeeded(), or(eq(variables['WEEK'], '3'), eq(variables['FORCE_COURTESY_PUSH'], 'true')))
 
+# Push to feed
+- script: |
+    cd $(Build.SourcesDirectory)\_package\nuget-packages\$(task)
+    push.cmd
+  displayName: 'Push Nuget packages'
+
 # # Test
 # - script: node make.js test
 #   displayName: Run tests
