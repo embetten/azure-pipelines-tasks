@@ -72,19 +72,16 @@ steps:
   displayName: 'Authenticate with nuget'
 
 # Push to feed
-- powershell: |
-    Write-Host $(Build.SourcesDirectory)\_package\nuget-packages\$(task)
+- script: |
     cd $(Build.SourcesDirectory)\_package\nuget-packages\$(task)
-    Write-Host "moved"
-    .\push.cmd
-    Write-Host "pushed"
+    push.cmd
   displayName: 'Push Nuget packages'
 
-# # Test
-# - script: node make.js test
-#   displayName: Run tests
-# - script: node make.js testLegacy --task "$(task)"
-#   displayName: Legacy tests with node 6
+# Test
+- script: node make.js test
+  displayName: Run tests
+- script: node make.js testLegacy --task "$(task)"
+  displayName: Legacy tests with node 6
 
 # # Publish test results
 # - task: PublishTestResults@2
