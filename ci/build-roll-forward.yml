@@ -54,7 +54,7 @@ steps:
   displayName: Set publish variables
 
 - powershell: |
-    Copy-Item $(Build.SourcesDirectory)\_package\tasks-layout -Destination $env:SYSTEM_ARTIFACTSDIRECTORY\package.zip
+    Copy-Item $(Build.SourcesDirectory)\_package\tasks.zip -Destination $env:SYSTEM_ARTIFACTSDIRECTORY\package.zip
     Add-Type -Assembly 'System.IO.Compression.FileSystem'
     [System.IO.Compression.ZipFile]::ExtractToDirectory("$env:SYSTEM_ARTIFACTSDIRECTORY\package.zip", "$env:SYSTEM_ARTIFACTSDIRECTORY")
 
