@@ -54,9 +54,8 @@ steps:
   displayName: Set publish variables
 
 - powershell: |
-    Copy-Item $(Build.SourcesDirectory)\_package\tasks.zip -Destination $env:SYSTEM_ARTIFACTSDIRECTORY\package.zip
-    Add-Type -Assembly 'System.IO.Compression.FileSystem'
-    [System.IO.Compression.ZipFile]::ExtractToDirectory("$env:SYSTEM_ARTIFACTSDIRECTORY\package.zip", "$env:SYSTEM_ARTIFACTSDIRECTORY")
+    Copy-Item $(Build.SourcesDirectory)\_package\tasks.zip -Destination $env:SYSTEM_ARTIFACTSDIRECTORY\package\tasks.zip
+    Write-Host "Copying from '$(Build.SourcesDirectory)\_package\tasks.zip' to '$env:SYSTEM_ARTIFACTSDIRECTORY\package\tasks.zip'"
 
 - script: node .\ci\stage-milestone.js
   displayName: Stage milestone
