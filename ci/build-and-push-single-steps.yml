@@ -63,7 +63,6 @@ steps:
   - template: sign-all-tasks.yml
     parameters:
       layoutRoot: $(Build.SourcesDirectory)\_package\tasks-layout
-    condition: and(succeeded(), ne(variables['build.reason'], 'PullRequest'), variables.task, variables.rollForward)
 
   # Stage all the tasks into a single zip for upload
   - script: node ./ci/stage-package.js
