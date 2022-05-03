@@ -10,7 +10,7 @@ resources:
     endpoint: AzureDevOps
     name: AzureDevOps/AzureDevOps
 
-# jobs:
+jobs:
 
 # # All tasks on Windows
 # - job: build_all_windows
