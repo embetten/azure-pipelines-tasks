@@ -63,18 +63,18 @@ async function main(): Promise<void> {
             .build();
         
         const regexGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+        if(version == "latest"){
+            tl.debug("Trying to resolve latest version for " + packageId);
+            version = await p.resolveLatestVersion(feed.feedId, feed.projectId, packageId);
+            tl.debug("Resolved version to: " + version);
+        } 
         
         if(!regexGuid.test(packageId)){
             tl.debug("Trying to resolve package name " + packageId + " to id.");
             packageId = await p.resolvePackageId(feed.feedId, feed.projectId, packageId);
             tl.debug("Resolved package id: " + packageId);
         }
-
-        if(version == "latest"){
-            tl.debug("Trying to resolve latest version for " + packageId);
-            version = await p.resolveLatestVersion(feed.feedId, feed.projectId, packageId);
-            tl.debug("Resolved version to: " + version);
-        }        
 
         const packageFiles: PackageFile[] = await p.download(feed.feedId, feed.projectId, packageId, version, downloadPath, extractPackage);
 

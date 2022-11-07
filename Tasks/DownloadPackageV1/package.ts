@@ -140,29 +140,29 @@ export abstract class Package {
     public async resolveLatestVersion(
         feedId: string,
         project: string,
-        packageId: string
+        packageName: string
     ): Promise<string> {
         const routeValues = {
             feedId: feedId,
             project: project
         };
         const queryParams = {
-            packageIdQuery: packageId,
+            packageNameQuery: packageName,
             protocolType: this.packageProtocolAreaName
         };
 
         return new Promise<string>(async (resolve, reject) => {
             this.getPackageMetadata(this.feedConnection, routeValues, queryParams, this.getPackagesAreaId)
             .then(packages => {
-                tl.debug("Found " + packages["count"] + " packages matching search pattern " + packageId);
+                tl.debug("Found " + packages["count"] + " packages matching search pattern " + packageName);
                 for (let i = 0; i < packages["count"]; i++) {
-                    if (packages["value"][i]["id"] == packageId && packages["value"][i]["versions"][0]["isListed"]) {
+                    if (packages["value"][i]["id"] == packageName && packages["value"][i]["versions"][0]["isListed"]) {
                         return resolve(packages["value"][i]["versions"][0]["normalizedVersion"]);
                     }
                 }
                 return reject("Latest version not found."); 
             }).catch(error => {
-                tl.debug("Latest version for package with id " + packageId + " not found: " + error);
+                tl.debug("Latest version for package with id " + packageName + " not found: " + error);
                 return reject(error); 
             })
         });
